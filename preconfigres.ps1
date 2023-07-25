@@ -58,9 +58,7 @@ $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
 $backend_RepoName = "tfazlab"
-$backend_RepoDesc = "Repo for the 3StagePipe Project"
 $backend_RepoNameUpd = "3StageTFaz"
-$backend_RepoBranch = "main"
 $RepoSourceControl = "git"
 $RepoVisibility = "private"
 $RepoProcess = "Basic"
@@ -384,7 +382,7 @@ az pipelines create `
     --name $backend_PipeBuild_Name `
     --description $backend_PipeDesc `
     --detect false `
-    --repository $backend_RepoName `
+    --repository $backend_RepoNameUpd `
     --branch $PipeBranch `
     --yml-path $backend_tfaz_build_yml `
     --repository-type $PipeRepositoryType `
@@ -397,11 +395,11 @@ az pipelines create `
     --name $backend_PipeDest_Name `
     --description $backend_PipeDesc `
     --detect false `
-    --repository $backend_RepoName `
-    --branch main `
+    --repository $backend_RepoNameUpd `
+    --branch $PipeBranch `
     --yml-path $backend_tfdest_yml `
-    --repository-type tfsgit `
-    --skip-first-run true
+    --repository-type $PipeRepositoryType `
+    --skip-first-run $PipeSkipFirstRun
 
     Start-Sleep -Seconds 10
 
