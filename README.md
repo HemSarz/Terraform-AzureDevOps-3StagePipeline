@@ -107,9 +107,7 @@ The repository has the following folder structure:
 # Deployment Process
 ### Prerequisites:
 
-- Clone the repo to the IDE of your choice or create the files
-
-These will be used in the `preconfigres.ps1` to setup the project
+- Clone the repo to the IDE of your choice or create the files manually.
 
 ### Backend Configuration
 
@@ -123,8 +121,10 @@ The script performs the following actions:
 3. Creates a `Key Vault` and sets access policies for the service principal.
 4. Creates and stores the `Azure DevOps Service Connection` details and other required secrets in the Key Vault.
 5. Create an grant for the `Azure DevOps Service Connection` to access Azure using the `SPN`
-6. Creates two `pipelines` which will be used to create and destroy the infrastructure.
-7. Creates and updates a `variable group` to store `Key Vault secrets` to be used by the pipeline.
+6. Creates an `Project` to deploy the infrastructure
+7. Creates an `Repository` which stores all the files needed to create the Azure infrastructure
+6. Creates two `Pipelines` which will be used to create and destroy the infrastructure.
+7. Creates and updates a `Variable group` to store `Key Vault secrets` to be used by the pipeline.
 
 ##### Link the `variable group` to the Azure Key Vault
    1. In the Azure DevOps project > `Pipelines` > `Library`.

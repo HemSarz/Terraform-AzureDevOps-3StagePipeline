@@ -16,4 +16,4 @@ Write-Host "Executing: git commit -m 'UpdateTFsv1'"
 git commit -m "UpdateTFsv1"
 
 Write-Host "Executing: git push -u origin main --force"
-git push -u ADOGit main --force
+git push -u origin main --force
