@@ -35,6 +35,8 @@ az devops project create `
         --n $backend_RepoNameUpd `
         --default-branch $backend_RepoBranch 
 
+    Start-Sleep -Seconds 5
+
     $LocalRepoPath = (Get-Location).Path
     git init $LocalRepoPath
     git add -A
