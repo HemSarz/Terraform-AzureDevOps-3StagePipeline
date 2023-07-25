@@ -6,7 +6,7 @@ Write-Host "Executing: git commit -m 'UpdateTFsv1'"
 git commit -m "UpdateTFsv1"
 
 Write-Host "Executing: git push -u origin main --force"
-git push -u origin main --force
+git push -u origin tfaz --force
 
 Write-Host "Running Git commands..."
 Write-Host "Executing: git add -A"
