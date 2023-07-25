@@ -1,7 +1,9 @@
 $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "tfazlab"
-$vackend_projectDesc = "Project to be used in 3StagePipeline HoL"
+$backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 $backend_RepoName = "tfazlab"
+$backend_RepoNameUpd = "3StageTFaz"
+$backend_RepoBranch = "main"
 
 az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project
@@ -17,13 +19,27 @@ az devops project create `
     --visibility private `
     --process 'Basic'
 
+    Start-Sleep -Seconds 5
+
     Start-Sleep -Seconds 10
+    $backend_RepoId = (az repos list `
+        --org $backend_org `
+        --p $backend_project `
+        --q "[?Name=='$backend_RepoName'].Id" -o tsv)
+
+    Start-Sleep -Seconds 5
+
+    az repos update `
+        --repository $backend_RepoId `
+        --org $backend_org `
+        --n $backend_RepoNameUpd `
+        --default-branch $backend_RepoBranch 
 
     $LocalRepoPath = (Get-Location).Path
     git init $LocalRepoPath
     git add -A
     git commit -m "InitialCommit"
-    git branch -M main
+    #git branch -M main
     $RemoteRepoURL = (az repos list `
         --project $backend_project `
         --org $backend_org `
