@@ -107,11 +107,7 @@ The repository has the following folder structure:
 # Deployment Process
 ### Prerequisites:
 
-In your `Azure DevOps organization` create the following:
-
-- A project
-- A Repository which is initalized.
-- Clone the repo to the IDE of your choice and create the files or clone this repo.
+- Clone the repo to the IDE of your choice or create the files
 
 These will be used in the `preconfigres.ps1` to setup the project
 
