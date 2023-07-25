@@ -28,4 +28,4 @@ az devops project create `
         --org $backend_org `
         --query "[?name=='$backend_RepoName'].webUrl" -o tsv)
     git remote add origin $RemoteRepoURL
-    git push -u origin main --force
+    git push -u origin main
