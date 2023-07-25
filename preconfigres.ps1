@@ -44,20 +44,26 @@ $backend_SPNappId_Name_kv_sc = "SPNappId"
 # Set the Azure DevOps organization and project details
 ############################################
 
+# Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "tfazlab"
-$vackend_projectDesc = "Project to be used in 3StagePipeline HoL"
+$backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 
 # Set the variable group details
 $backend_VBGroup = "hawaVB"
 $description = "backendVB"
 
-# Azure DevOps Connection variables
+# Azure DevOps Service Connection Variables
 $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
-$backend_RepoName = "tfazlab" #"3StageTFaz"
+$backend_RepoName = "tfazlab"
 $backend_RepoDesc = "Repo for the 3StagePipe Project"
+$backend_RepoNameUpd = "3StageTFaz"
+$backend_RepoBranch = "main"
+$RepoSourceControl = "git"
+$RepoVisibility = "private"
+$RepoProcess = "Basic"
 
 # Pipeline variables
 $backend_PipeDesc = "Pipeline for running 3 stage pipeline in 'tfazlab' project"
@@ -65,6 +71,9 @@ $backend_PipeBuild_Name = "TFaz-Build-Pipe"
 $backend_PipeDest_Name = "Tfaz-Destroy-Pipe"
 $backend_tfdest_yml = "tfaz_destroy.yml"
 $backend_tfaz_build_yml = "3stagedeploy.yml"
+$PipeSkipFirstRun = "true"
+$PipeRepositoryType = "tfsgit"
+$PipeBranch = "main"
 
 ############################################ 
 # Azure resource configuration
@@ -274,17 +283,18 @@ az devops configure --defaults project=$backend_project
 Write-Host "Creating Azure DevOps 'Project'..." -ForegroundColor Yellow
 az devops project create `
     --name $backend_project `
-    --description $vackend_projectDesc `
-    --detect false `
-    --open false `
+    --description $backend_projectDesc `
     --org $backend_org `
-    --source-control git `
-    --visibility private 
+    --source-control $RepoSourceControl `
+    --visibility $RepoVisibility `
+    --process $RepoProcess
+
+Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
     Start-Sleep -Seconds 10
 
 Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor Yellow
-## use this to create a new repo
+# use this to create a new repo | Remove "#"
 #az devops repo create `
   #  --name $backend_RepoName `
    # --description $backend_RepoDesc `
@@ -295,19 +305,45 @@ Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor
 
 # Use this to initialize the 'Standard' repo which is created with the project
 
-    Start-Sleep -Seconds 10
+    Start-Sleep -Seconds 5
 
-    $LocalRepoPath = (Get-Location).Path
-    git init $LocalRepoPath
-    git add -A
-    git commit -m "InitialCommit"
-    $RemoteRepoURL = (az repos list `
-        --project $backend_project `
-        --org $backend_org `
-        --query "[?name==$backend_RepoName].webUrl" -o tsv)
-    git remote add origin $RemoteRepoURL
-    git push -u origin --all --force
+$backend_RepoId = (az repos list `
+    --org $backend_org `
+    --project $backend_project `
+    --query "[?name=='$backend_RepoName'].id" -o tsv)
+    
+Write-Host "Fetching repository ID for '$backend_RepoName'..." -ForegroundColor Yellow
 
+    Start-Sleep -Seconds 5
+
+az repos update `
+    --repository $backend_RepoId `
+    --org $backend_org `
+    --p $backend_project `
+    --n $backend_RepoNameUpd ` ## Using --n/--name $repoName to update the name
+
+Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd'..." -ForegroundColor Green
+
+    Start-Sleep -Seconds 5
+
+$LocalRepoPath = (Get-Location).Path
+git init $LocalRepoPath
+git add -A
+git commit -m "InitialCommit"
+
+Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
+
+$RemoteRepoURL = (az repos list `
+    --project $backend_project `
+    --org $backend_org `
+    --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
+
+git remote add origin $RemoteRepoURL
+git push -u origin main
+
+Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
+
+    Start-Sleep -Seconds 5
 
 Write-Host "Creating Azure DevOps service endpoint..." -ForegroundColor Yellow
 az devops service-endpoint azurerm create `
@@ -349,11 +385,11 @@ az pipelines create `
     --description $backend_PipeDesc `
     --detect false `
     --repository $backend_RepoName `
-    --branch main `
+    --branch $PipeBranch `
     --yml-path $backend_tfaz_build_yml `
-    --repository-type tfsgit `
-    --skip-first-run true
-
+    --repository-type $PipeRepositoryType `
+    --skip-first-run $PipeSkipFirstRun
+    
     Start-Sleep -Seconds 10
 
 Write-Host "Create TF Destroy pipeline for tfazlab project" -ForegroundColor Yellow
