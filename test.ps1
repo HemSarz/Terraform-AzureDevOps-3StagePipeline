@@ -25,7 +25,7 @@ az devops project create `
     $backend_RepoId = (az repos list `
         --org $backend_org `
         --p $backend_project `
-        --q "[?Name=='$backend_RepoName'].Id" -o tsv)
+        --q "[?Name=='$backend_RepoName'].id" -o tsv)
 
     Start-Sleep -Seconds 5
 
