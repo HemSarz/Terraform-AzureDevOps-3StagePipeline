@@ -56,7 +56,7 @@ $description = "backendVB"
 $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
-$backend_RepoName = "3StageTFaz"
+$backend_RepoName = "tfazlab" #"3StageTFaz"
 $backend_RepoDesc = "Repo for the 3StagePipe Project"
 
 # Pipeline variables

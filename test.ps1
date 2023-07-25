@@ -1,6 +1,7 @@
 $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "tfazlab"
 $vackend_projectDesc = "Project to be used in 3StagePipeline HoL"
+$backend_RepoName = "tfazlab"
 
 az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project
@@ -10,7 +11,7 @@ az devops configure --defaults project=$backend_project
 Write-Host "Creating Azure DevOps 'Project'..." -ForegroundColor Yellow
 az devops project create `
     --name $backend_project `
-    --description $vackend_projectDesc `
+    --description $backend_projectDesc `
     --org $backend_org `
     --source-control git `
     --visibility private `
@@ -28,5 +29,4 @@ az devops project create `
         --org $backend_org `
         --query "[?name=='$backend_RepoName'].webUrl" -o tsv)
     git remote add origin $RemoteRepoURL
-    git remote set-url origin $RemoteRepoURL
-    git push --set-upstream -f origin main
+    git push -u origin main
