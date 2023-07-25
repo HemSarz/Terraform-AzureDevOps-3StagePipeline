@@ -8,7 +8,7 @@ $backend_RepoBranch = "main"
 az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating Azure DevOps 'Project'..." -ForegroundColor Yellow
 az devops project create `
@@ -19,32 +19,41 @@ az devops project create `
     --visibility private `
     --process 'Basic'
 
-    Start-Sleep -Seconds 5
+Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
-    Start-Sleep -Seconds 10
-    $backend_RepoId = (az repos list `
-        --org $backend_org `
-        --p $backend_project `
-        --q "[?Name=='$backend_RepoName'].id" -o tsv)
+Start-Sleep -Seconds 5
 
-    Start-Sleep -Seconds 5
+$backend_RepoId = (az repos list `
+    --org $backend_org `
+    --project $backend_project `
+    --query "[?name=='$backend_RepoName'].id" -o tsv)
 
-    az repos update `
-        --repository $backend_RepoId `
-        --org $backend_org `
-        --n $backend_RepoNameUpd `
-        --default-branch $backend_RepoBranch 
+Write-Host "Fetching repository ID for '$backend_RepoName'..." -ForegroundColor Yellow
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
-    $LocalRepoPath = (Get-Location).Path
-    git init $LocalRepoPath
-    git add -A
-    git commit -m "InitialCommit"
-    #git branch -M main
-    $RemoteRepoURL = (az repos list `
-        --project $backend_project `
-        --org $backend_org `
-        --query "[?name=='$backend_RepoName'].webUrl" -o tsv)
-    git remote add origin $RemoteRepoURL
-    git push -u origin main
+az repos update `
+    --repository $backend_RepoId `
+    --org $backend_org `
+    --n $backend_RepoNameUpd `
+    --default-branch $backend_RepoBranch
+
+Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd' and default branch set to '$backend_RepoBranch'." -ForegroundColor Green
+
+Start-Sleep -Seconds 5
+
+$LocalRepoPath = (Get-Location).Path
+git init $LocalRepoPath
+git add -A
+git commit -m "InitialCommit"
+
+Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
+
+$RemoteRepoURL = (az repos list `
+    --project $backend_project `
+    --org $backend_org `
+    --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
+git remote add origin $RemoteRepoURL
+git push -u origin main
+
+Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
