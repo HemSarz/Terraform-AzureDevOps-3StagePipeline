@@ -35,17 +35,19 @@ Start-Sleep -Seconds 5
 az repos update `
     --repository $backend_RepoId `
     --org $backend_org `
+    --p $backend_project `
     --n $backend_RepoNameUpd `
-    --default-branch $backend_RepoBranch
 
 Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd' and default branch set to '$backend_RepoBranch'." -ForegroundColor Green
 
 Start-Sleep -Seconds 5
 
+
 $LocalRepoPath = (Get-Location).Path
 git init $LocalRepoPath
 git add -A
 git commit -m "InitialCommit"
+
 
 Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
 
@@ -53,7 +55,9 @@ $RemoteRepoURL = (az repos list `
     --project $backend_project `
     --org $backend_org `
     --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
+
 git remote add origin $RemoteRepoURL
 git push -u origin main
+
 
 Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
