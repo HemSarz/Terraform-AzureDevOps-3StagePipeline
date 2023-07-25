@@ -1,0 +1,187 @@
+# The pipeline includes manual validation to ensure controlled destruction and cleanup of resources.
+
+# Trigger configuration:
+trigger: none
+
+# Pool configuration:
+pool:
+  vmImage: $(BuildAgent)
+
+# Variables definition:
+variables:
+  # This variable group contains AZ Key Vault secrets needed for the pipeline.
+  - group: hawaVB
+  - name: workingDir
+    value: $(System.DefaultWorkingDirectory)
+  - name: BuildAgent
+    value: ubuntu-latest
+  - name: tf_vr
+    value: latest
+  - name: azdoEndP
+    value: azdo-tfaz-conn
+
+# Parameters definition:
+parameters:
+  # Parameter 'envName' allows users to select the environment to deploy or destroy (e.g., 'dev', 'prod', 'qa').
+  - name: envName
+    displayName: Select Environment
+    type: string
+    default: dev
+    values:
+      - prod
+      - dev
+      - qa
+
+  # Parameter 'actionsToPerform' allows users to choose between deployment or destruction (default: 'Destroy').
+  - name: actionsToPerform
+    displayName: Deploy Or Destroy
+    type: string
+    default: Destroy
+    values:
+      - Destroy
+
+# Stages and Jobs definition:
+stages:
+  - stage: TerraformPlanStage
+    displayName: Terraform Plan
+    jobs:
+      - job: CreateTerraformPlan
+        displayName: Create Terraform Plan
+        steps:
+          # Install Terraform with the latest version.
+          - task: TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: "$(tf_vr)"
+
+          # Initialize Terraform with Azure backend and retrieve the Terraform plan.
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: "init"
+              backendType: "azurerm"
+              workingDirectory: "$(workingDir)"
+              backendServiceArm: "azdo-tfaz-conn"
+              backendAzureRmResourceGroupName: "$(RGName)"
+              backendAzureRmStorageAccountName: "$(STGName)"
+              backendAzureRmContainerName: "$(ContName)"
+              backendAzureRmKey: "$(TFStatefileName)"
+
+          - task: TerraformCLI@0
+            name: TerraformPlan
+            displayName: Generate Terraform Plan
+            inputs:
+              command: "plan"
+              backendType: "azurerm"
+              workingDirectory: "$(workingDir)"
+              commandOptions: "--destroy -no-color --out=TFazDestroyPlan"
+              environmentServiceName: "azdo-tfaz-conn"
+              publishPlanResults: "TFazDestroyPlan"
+
+  - stage: WaitForValidationStage # The pipeline requires a job to be running while waiting for validation
+    displayName: Wait for Validation
+    jobs:
+      - job: DummyJob
+        displayName: Dummy Job
+        steps:
+          - script: echo "This is a dummy job"
+
+      - job: WaitForValidationJob
+        displayName: Wait for external validation
+        pool: server
+        timeoutInMinutes: 4320 # job times out in 3 days
+        steps:
+          # Manual validation task for approval before proceeding with destruction.
+          - task: ManualValidation@0
+            displayName: Manual Intervention Approve | Reject > Destruction
+            inputs:
+              instructions: "Please review the Terraform plan and approve the destruction."
+              notifyUsers: ""
+              onTimeout: reject
+
+  # Define the conditions to execute this stage based on user input, source branch, and manual validation.
+  # If the run is approved, the job continues. If 'rejected,' it is skipped
+  - stage: Destroy
+    displayName: Destroy Resources
+    condition: |
+      and(
+        eq('${{ parameters.actionsToPerform }}', 'Destroy'),
+        or(
+          eq(variables['build.sourceBranch'], 'refs/heads/main'),
+          eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+          eq(variables['build.sourceBranch'], 'refs/heads/prod'),
+          eq(variables['build.sourceBranch'], 'refs/heads/qa')
+        ), 
+        in(dependencies.WaitForValidationStage.result, 'Succeeded')
+      )
+    dependsOn: WaitForValidationStage
+    jobs:
+      - job: DestroyJob
+        displayName: Destroy Resources
+        steps:
+          # Install Terraform with the specified version.
+          - task: TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: "$(tf_vr)"
+
+          # Initialize Terraform with Azure backend.
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: "init"
+              backendType: "azurerm"
+              workingDirectory: "$(workingDir)"
+              backendServiceArm: "azdo-tfaz-conn"
+              backendAzureRmResourceGroupName: "$(RGName)"
+              backendAzureRmStorageAccountName: "$(STGName)"
+              backendAzureRmContainerName: "$(ContName)"
+              backendAzureRmKey: "$(TFStatefileName)"
+              environmentServiceName: "azdo-tfaz-conn"
+
+          # Execute Terraform destroy using the plan generated in TerraformPlanStage.
+          - task: TerraformCLI@0
+            displayName: Terraform Destroy
+            inputs:
+              command: "destroy"
+              backendType: "azurerm"
+              workingDirectory: "$(workingDir)"
+              environmentServiceName: "azdo-tfaz-conn"
+
+          # Destroy remaining Resource Groups and AD User using Azure CLI tasks.
+          - task: PowerShell@2
+            displayName: Install Az Module
+            inputs:
+              targetType: "inline"
+              script: |
+                Install-Module -Name Az -Repository PSGallery -Force -Confirm:$false
+                Update-Module -Name Az -Force
+                # Import the Az module.
+                Import-Module Az -Force
+
+          # Connect Azure PowerShell to the specified service principal.
+          - task: AzurePowerShell@5
+            displayName: Connect Azure PowerShell | Destroy RGs and AD User
+            inputs:
+              azureSubscription: "azdo-tfaz-conn"
+              azurePowerShellVersion: "LatestVersion"
+              ScriptType: "inlineScript"
+              Inline: |
+                # Retrieve and destroy remaining Resource Groups.
+                $RGs = Get-AzResourceGroup
+
+                foreach($RG in $RGs) {
+                  Write-Host "Destroying resource group $($RG.ResourceGroupName)"
+                  Remove-AzResourceGroup -Name $RG.ResourceGroupName -Force -Verbose
+                }
+
+                # Delete the AD User.
+                $ADUserName = "dc01admin"
+                $adUser = Get-AzADUser -Filter "UserPrincipalName eq '$ADUserName'"
+
+                if ($adUser) {
+                  Write-Host "Deleting AD User $($adUser.UserPrincipalName)"
+                  Remove-AzADUser -ObjectId $adUser.Id -Force -Verbose
+                } else {
+                  Write-Host "AD User '$ADUserName' not found."
+                }

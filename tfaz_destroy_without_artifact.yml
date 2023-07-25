@@ -1,0 +1,50 @@
+# Trigger configuration:-
+trigger: none
+
+# Pool configuration:-
+pool:
+  vmImage: $(BuildAgent)
+
+# Variables definition
+variables:
+  - group: hawaVB
+  - name: azdoEndP
+    value: azdo-tfaz-conn
+  - name: BuildAgent
+    value: ubuntu-latest
+  - name: tf_vr
+    value: latest
+
+# Install Terraform
+steps:
+  - task: TerraformInstaller@0
+    displayName: "Install Terraform | Latest Version"
+    inputs:
+      terraformVersion: "$(tf_vr)"
+  # Terraform Init:-
+  - task: TerraformCLI@0
+    displayName: "Terraform init"
+    inputs:
+      command: "init"
+      backendType: "azurerm"
+      backendServiceArm: "$(azdoEndP)"
+      backendAzureRmResourceGroupName: "$(RGName)"
+      backendAzureRmStorageAccountName: "$(STGName)"
+      backendAzureRmContainerName: "$(ContName)"
+      backendAzureRmKey: "$(TFStatefileName)"
+  # Terraform Destroy:-
+  - task: TerraformCLI@0
+    displayName: Terraform Destroy
+    inputs:
+      command: "destroy"
+      backendType: "azurerm"
+      environmentServiceName: "$(azdoEndP)"
+      commandOptions: "--auto-approve"
+  # Destroy Azure Resource
+  - task: AzureCLI@2
+    displayName: Destroy 'networkwatcherrg'
+    inputs:
+      azureSubscription: "azdo-tfaz-conn"
+      scriptType: "pscore"
+      scriptLocation: "inlineScript"
+      inlineScript: "az group delete --name networkwatcherrg --yes"
