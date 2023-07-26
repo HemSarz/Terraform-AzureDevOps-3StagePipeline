@@ -84,13 +84,10 @@ The repository has the following folder structure:
 │   # Terraform code for creating the Azure Storage Container.
 │
 ├── tfaz_destroy_without_artifact.yml
-│   # Terraform destroy YAML file without an artifact.
+│   # Terraform destroy YAML file without using artifact.
 │
 ├── tfaz_destroy.yml
-│   # Terraform destroy YAML file.
-│
-├── validate.ps1
-│   # PowerShell script for Terraform validation.
+│   # Terraform destroy YAML file[3Stages]
 │
 ├── variables.tf
 │   # This file defines the input variables used in the Terraform configuration.
