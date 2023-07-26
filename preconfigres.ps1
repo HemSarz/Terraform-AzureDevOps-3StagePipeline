@@ -5,7 +5,7 @@
 $backend_spn = "tfazinfra"
 $backend_spn_role = "Contributor"
 $backend_rg = "backend-tf-rg"
-$backend_stg = "backendstgtf"
+$backend_stg = "backendstgt"
 $backend_stg_sku = "Standard_LRS"
 $backend_cont = "backendcont"
 $backend_location = "norwayeast"
