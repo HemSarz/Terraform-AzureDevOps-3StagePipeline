@@ -46,7 +46,7 @@ $backend_SPNappId_Name_kv_sc = "SPNappId"
 
 # Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazHoL" ## Note : Project name must be unique each run
+$backend_project = "labtfaz" ## Note : Project name must be unique each run
 $backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 
 # Set the variable group details
@@ -57,7 +57,7 @@ $description = "backendVB"
 $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
-$backend_RepoName = "tfazHoL" # Repo name must be the same as project name. This is because this will be "default" name for the initial repo created
+$backend_RepoName = "labtfaz" # Repo name must be the same as project name. This is because this will be "default" name for the initial repo created
 $backend_RepoNameUpd = "3StageTFaz" # | This VB is used to change repo name
 $RepoSourceControl = "git"
 $RepoVisibility = "private"
