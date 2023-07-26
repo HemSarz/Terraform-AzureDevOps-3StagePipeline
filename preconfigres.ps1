@@ -46,7 +46,7 @@ $backend_SPNappId_Name_kv_sc = "SPNappId"
 
 # Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab"
+$backend_project = "tfazlab1"
 $backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 
 # Set the variable group details
