@@ -291,6 +291,39 @@ Write-Host "Project '$backend_project' created successfully." -ForegroundColor G
 
 Start-Sleep -Seconds 10
 
+Write-Host "Creating Azure DevOps service endpoint..." -ForegroundColor Yellow
+az devops service-endpoint azurerm create `
+    --azure-rm-service-principal-id $backend_SPNappId `
+    --azure-rm-subscription-id $backend_SUBid `
+    --azure-rm-subscription-name $backend_SUBName `
+    --azure-rm-tenant-id $backend_TNTid `
+    --name $backend_AZDOSrvConnName `
+    --org $backend_org `
+    --project $backend_project
+
+Start-Sleep -Seconds 10
+
+Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
+$backend_proj_Id = (az devops project show `
+        --project $backend_project `
+        --org $backend_org `
+        --query 'id' -o tsv)
+
+Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
+$backend_EndPid = (az devops service-endpoint list `
+        --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv)
+
+Start-Sleep -Seconds 5
+
+az devops service-endpoint update `
+    --detect false `
+    --id $backend_EndPid `
+    --org $backend_org `
+    --project $backend_proj_Id `
+    --enable-for-all true `
+
+Start-Sleep -Seconds 10
+
 Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor Yellow
 # use this to create a new repo | Remove "#"
 #az devops repo create `
@@ -301,17 +334,45 @@ Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor
 # --org $backend_org `
 # --project $backend_project
 
+# Use this to initialize the 'Standard' repo which is created with the project
+
 Start-Sleep -Seconds 5
 
-Write-Host "Creating Azure DevOps service endpoint..." -ForegroundColor Yellow
-az devops service-endpoint azurerm create `
-    --azure-rm-service-principal-id $backend_SPNappId `
-    --azure-rm-subscription-id $backend_SUBid `
-    --azure-rm-subscription-name $backend_SUBName `
-    --azure-rm-tenant-id $backend_TNTid `
-    --name $backend_AZDOSrvConnName `
+$backend_RepoId = (az repos list `
+        --org $backend_org `
+        --project $backend_project `
+        --query "[?name=='$backend_RepoName'].id" -o tsv)
+    
+Write-Host "Fetching repository ID for '$backend_RepoName'..." -ForegroundColor Yellow
+
+Start-Sleep -Seconds 5
+
+az repos update `
+    --repository $backend_RepoId `
     --org $backend_org `
-    --project $backend_project
+    --project $backend_project `
+    --n $backend_RepoNameUpd ` ## Using --n/--name $repoName to update the name
+
+Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd'..." -ForegroundColor Green
+
+Start-Sleep -Seconds 5
+
+$LocalRepoPath = (Get-Location).Path
+git init $LocalRepoPath
+git add -A
+git commit -m "InitialCommit"
+
+Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
+
+$RemoteRepoURL = (az repos list `
+        --project $backend_project `
+        --org $backend_org `
+        --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
+
+git remote add origin $RemoteRepoURL
+git push -u origin main
+
+Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
 
 Start-Sleep -Seconds 5
 
@@ -360,66 +421,5 @@ az pipelines create `
     --yml-path $backend_tfdest_yml `
     --repository-type $PipeRepositoryType `
     --skip-first-run $PipeSkipFirstRun
-
-Start-Sleep -Seconds 10
-
-Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
-$backend_proj_Id = (az devops project show `
-        --project $backend_project `
-        --org $backend_org `
-        --query 'id' -o tsv)
-
-Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
-$backend_EndPid = (az devops service-endpoint list `
-        --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv)
-
-Start-Sleep -Seconds 5
-
-az devops service-endpoint update `
-    --detect false `
-    --id $backend_EndPid `
-    --org $backend_org `
-    --project $backend_proj_Id `
-    --enable-for-all true `
-
-    # Use this to initialize the 'Standard' repo which is created with the project
-
-Start-Sleep -Seconds 5
-
-$backend_RepoId = (az repos list `
-        --org $backend_org `
-        --project $backend_project `
-        --query "[?name=='$backend_RepoName'].id" -o tsv)
-    
-Write-Host "Fetching repository ID for '$backend_RepoName'..." -ForegroundColor Yellow
-
-Start-Sleep -Seconds 5
-
-az repos update `
-    --repository $backend_RepoId `
-    --org $backend_org `
-    --project $backend_project `
-    --n $backend_RepoNameUpd ` ## Using --n/--name $repoName to update the name
-
-Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd'..." -ForegroundColor Green
-
-Start-Sleep -Seconds 5
-
-$LocalRepoPath = (Get-Location).Path
-git init $LocalRepoPath
-git add -A
-git commit -m "InitialCommit"
-
-Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
-
-$RemoteRepoURL = (az repos list `
-        --project $backend_project `
-        --org $backend_org `
-        --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
-
-git remote add origin $RemoteRepoURL
-git push -u origin main
-
-Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
 
 Write-Host "Done!" -ForegroundColor Green
