@@ -4,7 +4,7 @@ $backend_rg = "backend-tf-rg"
 
 # Set the Azure DevOps organization and project details
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab"
+$backend_project = "tfazlabHoL"
 
 # Set the variable group details
 #$backend_VBGroup = "hawaVB"
