@@ -4,7 +4,7 @@ $backend_rg = "backend-tf-rg"
 
 # Set the Azure DevOps organization and project details
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab1"
+$backend_project = "tfazlab"
 
 # Set the variable group details
 #$backend_VBGroup = "hawaVB"
@@ -14,7 +14,7 @@ $backend_AZDOSrvConnName = "azdo-tfaz-conn"
 
 # Azure DevOps variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab1"
+$backend_project = "tfazHoL"
 $backend_AZDOSrvConnName = "azdo-tfaz-conn"
 #$backend_VBGroup = "hawaVB"
 #$backend_PipeBuild_Name = "TFaz-Build-Pipe"
@@ -47,10 +47,10 @@ az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project
 
 # Delete Service Connection
-Write-Host "Retrieving Azure DevOps service connection ID..." -ForegroundColor Yellow
-$backend_endPointId = $(az devops service-endpoint list --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv)
-az devops service-endpoint delete --id $backend_endPointId --yes
-Write-Host "Azure DevOps service connection deleted." -ForegroundColor Green
+#Write-Host "Retrieving Azure DevOps service connection ID..." -ForegroundColor Yellow
+#$backend_endPointId = $(az devops service-endpoint list --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv)
+#az devops service-endpoint delete --id $backend_endPointId --yes
+#Write-Host "Azure DevOps service connection deleted." -ForegroundColor Green
 
 Write-Host "Retrieve & Delete Project..." -ForegroundColor Yellow
 $backend_projectID = (az devops project show --project $backend_project --query 'id' -o tsv )
