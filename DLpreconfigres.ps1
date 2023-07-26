@@ -26,8 +26,6 @@ $backend_tfaz_build_yml = "tfazbuild.yml"
 $env:AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$backend_SPNPass
 #$env:AZURE_DEVOPS_EXT_PAT="ww7hj2c25xypj4m6oqc5u5qhzehabll5frjhpu43qus7rql3dfeq"
 
-Write-Host "Destroying AD User..." -ForegroundColor Red
-$user = $(az ad user show --upn "dc01admin@hemensarzalihotmail.onmicrosoft.com" --query objectId --output tsv)
 
 # Delete Resource Group
 Write-Host "Deleting resource group..." -ForegroundColor Yellow
@@ -54,21 +52,25 @@ $backend_endPointId = $(az devops service-endpoint list --query "[?name=='$backe
 az devops service-endpoint delete --id $backend_endPointId --yes
 Write-Host "Azure DevOps service connection deleted." -ForegroundColor Green
 
+Write-Host "Retrieve & Delete Project..." -ForegroundColor Yellow
+$backend_projectID = (az devops project show --project $backend_project --query 'id' -o tsv )
+az devops project delete --id $backend_projectID --yes
+
 # Delete Variable Group
-Write-Host "Retrieving Azure DevOps variable group ID..." -ForegroundColor Yellow
-$backend_vgId = $(az pipelines variable-group list --query "[?name=='$backend_VBGroup'].id" -o tsv)
-az pipelines variable-group delete --id $backend_vgId --yes
-Write-Host "Azure DevOps variable group deleted." -ForegroundColor Green
+#Write-Host "Retrieving Azure DevOps variable group ID..." -ForegroundColor Yellow
+#$backend_vgId = $(az pipelines variable-group list --query "[?name=='$backend_VBGroup'].id" -o tsv)
+#az pipelines variable-group delete --id $backend_vgId --yes
+#Write-Host "Azure DevOps variable group deleted." -ForegroundColor Green
 
 # Delete Pipeline
-Write-Host "Retrieving Azure DevOps pipeline ID..." -ForegroundColor Yellow
-$backend_pipelineId = $(az pipelines show --org $backend_org --project $backend_project --name $backend_PipeBuild_Name --query 'id' -o tsv)
-az pipelines delete --id $backend_pipelineId --org $backend_org --project $backend_project --detect false --yes
-Write-Host "Azure DevOps pipeline deleted." -ForegroundColor Green
+#Write-Host "Retrieving Azure DevOps pipeline ID..." -ForegroundColor Yellow
+#$backend_pipelineId = $(az pipelines show --org $backend_org --project $backend_project --name $backend_PipeBuild_Name --query 'id' -o tsv)
+#az pipelines delete --id $backend_pipelineId --org $backend_org --project $backend_project --detect false --yes
+#Write-Host "Azure DevOps pipeline deleted." -ForegroundColor Green
 
-Write-Host "Retrieving Azure DevOps pipeline ID..." -ForegroundColor Yellow
-$backend_pipelineId_dest_id = $(az pipelines show --org $backend_org --project $backend_project --name $backend_PipeDest_Name --query 'id' -o tsv)
-az pipelines delete --id $backend_pipelineId_dest_id --org $backend_org --project $backend_project --detect false --yes
-Write-Host "Azure DevOps pipeline deleted." -ForegroundColor Green
+#Write-Host "Retrieving Azure DevOps pipeline ID..." -ForegroundColor Yellow
+#$backend_pipelineId_dest_id = $(az pipelines show --org $backend_org --project $backend_project --name $backend_PipeDest_Name --query 'id' -o tsv)
+#az pipelines delete --id $backend_pipelineId_dest_id --org $backend_org --project $backend_project --detect false --yes
+#Write-Host "Azure DevOps pipeline deleted." -ForegroundColor Green
 
 Write-Host "Resource cleanup completed." -ForegroundColor Green
