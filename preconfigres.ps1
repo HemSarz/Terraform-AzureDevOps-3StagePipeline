@@ -57,7 +57,7 @@ $description = "backendVB"
 $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
-$backend_RepoName = "tfazlab"
+$backend_RepoName = "tfazlab1"
 $backend_RepoNameUpd = "3StageTFaz"
 $RepoSourceControl = "git"
 $RepoVisibility = "private"
