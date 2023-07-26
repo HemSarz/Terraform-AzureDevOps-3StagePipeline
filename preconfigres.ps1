@@ -83,7 +83,7 @@ $backend_SUBid = $(az account show --query 'id' -o tsv)
 $backend_SUBName = $(az account show --query 'name' -o tsv)
 $backend_TNTid = $(az account show --query 'tenantId' -o tsv)
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating service principal..." -ForegroundColor Yellow
 $backend_SPNPass = $(az ad sp create-for-rbac `
@@ -92,11 +92,11 @@ $backend_SPNPass = $(az ad sp create-for-rbac `
         --scope /subscriptions/$backend_SUBid `
         --query 'password' -o tsv)
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 $env:AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY = $backend_SPNPass
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating resource group..." -ForegroundColor Yellow
 az group create `
@@ -115,7 +115,7 @@ $backend_STGPass = $(az storage account keys list `
         --account-name $backend_stg `
         --query "[0].value" -o tsv)
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating storage container..." -ForegroundColor Yellow
 az storage container create `
@@ -123,7 +123,7 @@ az storage container create `
     --account-name $backend_stg `
     --account-key $backend_STGPass
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating the Key Vault..." -ForegroundColor Yellow
 az keyvault create `
@@ -131,7 +131,7 @@ az keyvault create `
     --name $backend_kv `
     --location $backend_location
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Allowing the Service Principal Access in Key Vault..." -ForegroundColor Yellow
 $backend_SPNappId = $(az ad sp list `
@@ -142,14 +142,14 @@ $backend_SPNid = $(az ad sp show `
         --id $backend_SPNappId `
         --query id -o tsv)
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 az keyvault set-policy `
     --name $backend_kv `
     --object-id $backend_SPNid `
     --secret-permissions get list set delete purge
 
-    Start-Sleep -Seconds 10
+Start-Sleep -Seconds 10
 
 Write-Host "Assign SPN AD Permissions..." -ForegroundColor Yellow
 
@@ -179,7 +179,7 @@ Start-Sleep -Seconds 20
 Write-Host 'Add admin-consent' -ForegroundColor Green
 az ad app permission admin-consent --id $backend_SPNappId
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Azure DevOps Service Connection Name in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -187,7 +187,7 @@ az keyvault secret set `
     --name $backend_AZDOSrvConnName_kv_sc `
     --value $backend_AZDOSrvConnName
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Resource Group Name in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -195,7 +195,7 @@ az keyvault secret set `
     --name $backend_RGName_kv_sc `
     --value $backend_rg
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Storage Account Password in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -203,7 +203,7 @@ az keyvault secret set `
     --name $backend_STGPass_Name_kv_sc `
     --value $backend_stg
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Container Name in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -211,7 +211,7 @@ az keyvault secret set `
     --name $backend_ContName_kv_sc `
     --value $backend_cont
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Azure Resource Manager Key in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -219,7 +219,7 @@ az keyvault secret set `
     --name $backendAzureRmKey_kv_sc `
     --value $backendAzureRmKey
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Subscription ID in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -227,7 +227,7 @@ az keyvault secret set `
     --name $backend_SUBid_Name_kv_sc `
     --value $backend_SUBid
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing Tenant ID in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -235,7 +235,7 @@ az keyvault secret set `
     --name $backend_TNTid_Name_kv_sc `
     --value $backend_TNTid
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing the Storage Account Access Key in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -243,7 +243,7 @@ az keyvault secret set `
     --name $backend_STGPass_Name_kv_sc `
     --value $backend_STGPass
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing the Storage Account Name in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -251,7 +251,7 @@ az keyvault secret set `
     --name $backend_STGName_kv_sc `
     --value $backend_stg
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing SPN Password in Key Vault..." -ForegroundColor Yellow
 az keyvault secret set `
@@ -259,7 +259,7 @@ az keyvault secret set `
     --name $backend_SPNPass_Name_kv_sc `
     --value $backend_SPNPass
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Storing SPN appId..." -ForegroundColor Yellow 
 az keyvault secret set `
@@ -267,7 +267,7 @@ az keyvault secret set `
     --name $backend_SPNappId_Name_kv_sc `
     --value $backend_SPNappId
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 ############################################ 
 # AZURE DEVOPS configuration
@@ -276,7 +276,7 @@ az keyvault secret set `
 az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating Azure DevOps 'Project'..." -ForegroundColor Yellow
 az devops project create `
@@ -289,30 +289,30 @@ az devops project create `
 
 Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
-    Start-Sleep -Seconds 10
+Start-Sleep -Seconds 10
 
 Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor Yellow
 # use this to create a new repo | Remove "#"
 #az devops repo create `
-  #  --name $backend_RepoName `
-   # --description $backend_RepoDesc `
-   # --detect false `
-   # --open false `
-   # --org $backend_org `
-   # --project $backend_project
+#  --name $backend_RepoName `
+# --description $backend_RepoDesc `
+# --detect false `
+# --open false `
+# --org $backend_org `
+# --project $backend_project
 
 # Use this to initialize the 'Standard' repo which is created with the project
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 $backend_RepoId = (az repos list `
-    --org $backend_org `
-    --project $backend_project `
-    --query "[?name=='$backend_RepoName'].id" -o tsv)
+        --org $backend_org `
+        --project $backend_project `
+        --query "[?name=='$backend_RepoName'].id" -o tsv)
     
 Write-Host "Fetching repository ID for '$backend_RepoName'..." -ForegroundColor Yellow
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 az repos update `
     --repository $backend_RepoId `
@@ -322,7 +322,7 @@ az repos update `
 
 Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd'..." -ForegroundColor Green
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 $LocalRepoPath = (Get-Location).Path
 git init $LocalRepoPath
@@ -332,16 +332,16 @@ git commit -m "InitialCommit"
 Write-Host "Local Git repository initialized with an initial commit." -ForegroundColor Green
 
 $RemoteRepoURL = (az repos list `
-    --project $backend_project `
-    --org $backend_org `
-    --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
+        --project $backend_project `
+        --org $backend_org `
+        --query "[?name=='$backend_RepoNameUpd'].webUrl" -o tsv)
 
 git remote add origin $RemoteRepoURL
 git push -u origin main
 
 Write-Host "Local repository successfully linked with the remote repository." -ForegroundColor Green
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating Azure DevOps service endpoint..." -ForegroundColor Yellow
 az devops service-endpoint azurerm create `
@@ -353,7 +353,7 @@ az devops service-endpoint azurerm create `
     --org $backend_org `
     --p $backend_proj_Id
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating the variable group..." -ForegroundColor Yellow
 az pipelines variable-group create `
@@ -375,7 +375,7 @@ az pipelines variable-group update `
     --p $backend_project `
     --authorize true
 
-    Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 Write-Host "Creating pipeline for tfazlab project..." -ForegroundColor Yellow
 az pipelines create `
@@ -388,7 +388,7 @@ az pipelines create `
     --repository-type $PipeRepositoryType `
     --skip-first-run $PipeSkipFirstRun
     
-    Start-Sleep -Seconds 10
+Start-Sleep -Seconds 10
 
 Write-Host "Create TF Destroy pipeline for tfazlab project" -ForegroundColor Yellow
 az pipelines create `
@@ -401,17 +401,19 @@ az pipelines create `
     --repository-type $PipeRepositoryType `
     --skip-first-run $PipeSkipFirstRun
 
-    Start-Sleep -Seconds 10
+Start-Sleep -Seconds 10
 
 Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
 $backend_proj_Id = (az devops project show `
-    --p $backend_project `
-    --org $backend_org `
-    --q 'id' -o tsv)
+        --p $backend_project `
+        --org $backend_org `
+        --q 'id' -o tsv)
 
 Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
-$backend_EndPid = az devops service-endpoint list `
-    --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv
+$backend_EndPid = (az devops service-endpoint list `
+        --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv)
+
+Start-Sleep -Seconds 5
 
 az devops service-endpoint update `
     --detect false `
@@ -419,5 +421,6 @@ az devops service-endpoint update `
     --org $backend_org `
     --p $backend_proj_Id `
     --enable-for-all true `
-    --debug 
+    --debug
+    
 Write-Host "Done!" -ForegroundColor Green
