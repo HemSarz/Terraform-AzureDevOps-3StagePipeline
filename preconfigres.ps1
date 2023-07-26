@@ -405,12 +405,12 @@ az pipelines create `
 
 Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
 $backend_EndPid = az devops service-endpoint list `
-    --query "[?name=='$backend_AZDOSrvConnName'].id" `
-    -o tsv
+    --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv
 
 az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
-    --enable-for-all true `
+    --org $backend_org `
+    --project $backend_project
 
 Write-Host "Done!" -ForegroundColor Green
