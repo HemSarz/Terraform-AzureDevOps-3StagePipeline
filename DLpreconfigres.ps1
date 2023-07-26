@@ -4,7 +4,7 @@ $backend_rg = "backend-tf-rg"
 
 # Set the Azure DevOps organization and project details
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab"
+$backend_project = "tfazlab1"
 
 # Set the variable group details
 #$backend_VBGroup = "hawaVB"
@@ -14,7 +14,7 @@ $backend_AZDOSrvConnName = "azdo-tfaz-conn"
 
 # Azure DevOps variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab"
+$backend_project = "tfazlab1"
 $backend_AZDOSrvConnName = "azdo-tfaz-conn"
 #$backend_VBGroup = "hawaVB"
 #$backend_PipeBuild_Name = "TFaz-Build-Pipe"
