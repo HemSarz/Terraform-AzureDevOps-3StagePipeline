@@ -7,7 +7,7 @@ $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "tfazlab"
 
 # Set the variable group details
-$backend_VBGroup = "hawaVB"
+#$backend_VBGroup = "hawaVB"
 
 # Azure DevOps Connection variables
 $backend_AZDOSrvConnName = "azdo-tfaz-conn"
@@ -17,10 +17,10 @@ $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "tfazlab"
 $backend_AZDOSrvConnName = "azdo-tfaz-conn"
 $backend_VBGroup = "hawaVB"
-$backend_PipeBuild_Name = "TFaz-Build-Pipe"
-$backend_PipeDest_Name = "Tfaz-Destroy-Pipe"
-$backend_tfdest_yml = "tfaz_destroy.yml"
-$backend_tfaz_build_yml = "tfazbuild.yml"
+#$backend_PipeBuild_Name = "TFaz-Build-Pipe"
+#$backend_PipeDest_Name = "Tfaz-Destroy-Pipe"
+#$backend_tfdest_yml = "tfaz_destroy.yml"
+#$backend_tfaz_build_yml = "tfazbuild.yml"
 
 # Set the SPN password as an environment variable: used by the Azdo Service Connection
 $env:AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$backend_SPNPass
