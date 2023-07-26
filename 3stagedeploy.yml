@@ -207,8 +207,9 @@ stages:
         eq(variables['build.sourceBranch'], 'refs/heads/prod'),
         eq(variables['build.sourceBranch'], 'refs/heads/qa')
         ),
-        in(dependencies.AdminValidationStage.result, 'Succeeded')
+        in(dependencies.AdminValidation.result, 'Succeeded')
       )
+    dependsOn: AdminValidation
     jobs:
       - deployment:
         displayName: Deploy
