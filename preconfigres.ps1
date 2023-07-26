@@ -317,7 +317,7 @@ Start-Sleep -Seconds 5
 az repos update `
     --repository $backend_RepoId `
     --org $backend_org `
-    --p $backend_project `
+    --project $backend_project `
     --n $backend_RepoNameUpd ` ## Using --n/--name $repoName to update the name
 
 Write-Host "Repository '$backend_RepoName' updated with name '$backend_RepoNameUpd'..." -ForegroundColor Green
@@ -351,7 +351,7 @@ az devops service-endpoint azurerm create `
     --azure-rm-tenant-id $backend_TNTid `
     --name $backend_AZDOSrvConnName `
     --org $backend_org `
-    --p $backend_project
+    --project $backend_project
 
 Start-Sleep -Seconds 5
 
@@ -366,13 +366,13 @@ az pipelines variable-group create `
 
 $backend_VBGroupID = $(az pipelines variable-group list `
         --organization $backend_org `
-        --p $backend_project `
+        --project $backend_project `
         --query "[?name=='$backend_VBGroup'].id" -o tsv)
 
 az pipelines variable-group update `
     --id $backend_VBGroupID `
     --org $backend_org `
-    --p $backend_project `
+    --project $backend_project `
     --authorize true
 
 Start-Sleep -Seconds 5
@@ -405,9 +405,9 @@ Start-Sleep -Seconds 10
 
 Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
 $backend_proj_Id = (az devops project show `
-        --p $backend_project `
+        --project $backend_project `
         --org $backend_org `
-        --q 'id' -o tsv)
+        --query 'id' -o tsv)
 
 Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
 $backend_EndPid = (az devops service-endpoint list `
@@ -419,7 +419,7 @@ az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
     --org $backend_org `
-    --p $backend_proj_Id `
+    --project $backend_proj_Id `
     --enable-for-all true `
 
 Write-Host "Done!" -ForegroundColor Green
