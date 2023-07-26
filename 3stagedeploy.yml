@@ -109,7 +109,7 @@ stages:
               environmentServiceName: "$(azdoEndP)"
               publishPlanResults: "TfazBuildPlan"
 
-# Configuration: Build stage to create artifacts for the Terraform plan
+  # Configuration: Build stage to create artifacts for the Terraform plan
   - stage: Build_Artifact_Plan
     jobs:
       - job: Build
@@ -177,7 +177,27 @@ stages:
               TargetPath: "$(ASDir)/$(TFplanDir)"
               ArtifactName: "$(artifactName)"
 
-# Configuration: Deploy stage to apply the Terraform plan
+  - stage: AdminValidation
+    displayName: Wait for AdminValidation
+    jobs:
+      - job: DummyJob
+        displayName: DummyJobForValidationProccess
+        steps:
+          - script: echo "This is run to allow for validation proccess to run"
+
+      - job: WaitforAdminValidation
+        displayName: Wait for AdminValidation
+        pool: server
+        timeoutInMinutes: 4320
+        steps:
+          - task: ManualValidation@0
+            displayName: Manual Intervention Approve | Reject
+            inputs:
+              instructions: "Please review the request"
+              notifyUsers: "" # Add users email or leave ""
+              onTimeout: reject
+
+  # Configuration: Deploy stage to apply the Terraform plan
   - stage: Deploy
     condition: |
       and(succeeded(),
@@ -186,7 +206,8 @@ stages:
         eq(variables['build.sourceBranch'], 'refs/heads/dev'),
         eq(variables['build.sourceBranch'], 'refs/heads/prod'),
         eq(variables['build.sourceBranch'], 'refs/heads/qa')
-        )
+        ),
+        in(dependencies.AdminValidationStage.result, 'Succeeded')
       )
     jobs:
       - deployment:
