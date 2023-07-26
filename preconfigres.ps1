@@ -58,7 +58,7 @@ $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
 $backend_RepoName = "labtfaz" # Repo name must be the same as project name. This is because this will be "default" name for the initial repo created
-$backend_RepoNameUpd = "3StageTFaz" # | This VB is used to change repo name
+$backend_RepoNameUpd = "3StageTFaz" # | This VB is used to change the repo name
 $RepoSourceControl = "git"
 $RepoVisibility = "private"
 $RepoProcess = "Basic"
@@ -78,8 +78,7 @@ $PipeBranch = "main"
 ############################################
 
 Write-Host "Retrieving Azure Ids..." -ForegroundColor Green
-# Retrieve AZ IDs
-$backend_SUBid = $(az account show --query 'id' -o tsv)
+# Retrieve AZ IDs$backend_SUBid = $(az account show --query 'id' -o tsv)
 $backend_SUBName = $(az account show --query 'name' -o tsv)
 $backend_TNTid = $(az account show --query 'tenantId' -o tsv)
 
