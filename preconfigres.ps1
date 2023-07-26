@@ -46,7 +46,7 @@ $backend_SPNappId_Name_kv_sc = "SPNappId"
 
 # Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "tfazlab1"
+$backend_project = "tfazlab"
 $backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 
 # Set the variable group details
@@ -57,7 +57,7 @@ $description = "backendVB"
 $backend_AZDOSrvConnName = 'azdo-tfaz-conn'
 
 # Repository variables
-$backend_RepoName = "tfazlab1"
+$backend_RepoName = "tfazlab"
 $backend_RepoNameUpd = "3StageTFaz"
 $RepoSourceControl = "git"
 $RepoVisibility = "private"
@@ -421,6 +421,5 @@ az devops service-endpoint update `
     --org $backend_org `
     --p $backend_proj_Id `
     --enable-for-all true `
-    --debug
 
 Write-Host "Done!" -ForegroundColor Green
