@@ -287,13 +287,6 @@ az devops project create `
     --visibility $RepoVisibility `
     --process $RepoProcess
 
-    Start-Sleep -Seconds 10
-
-Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
-$backend_proj_Id = (az devops project show `
-    --p $backend_project `
-    --org $backend_org --q 'id' -o tsv)
-
 Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
     Start-Sleep -Seconds 10
@@ -410,6 +403,12 @@ az pipelines create `
 
     Start-Sleep -Seconds 10
 
+Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
+$backend_proj_Id = (az devops project show `
+    --p $backend_project `
+    --org $backend_org `
+    --q 'id' -o tsv)
+
 Write-Host "Allowing AZDO ACCESS..." -ForegroundColor Yellow
 $backend_EndPid = az devops service-endpoint list `
     --query "[?name=='$backend_AZDOSrvConnName'].id" -o tsv
@@ -417,6 +416,8 @@ $backend_EndPid = az devops service-endpoint list `
 az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
-    --enable-for-all true # Allow all pipelines | Classic and Yaml
-
+    --org $backend_org `
+    --p $backend_proj_Id `
+    --enable-for-all true `
+    --debug 
 Write-Host "Done!" -ForegroundColor Green
