@@ -417,8 +417,6 @@ $backend_EndPid = az devops service-endpoint list `
 az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
-    --org $backend_org `
-    --p $backend_proj_Id `
-    --enable-for-all false
+    --enable-for-all true # Allow all pipelines | Classic and Yaml
 
 Write-Host "Done!" -ForegroundColor Green
