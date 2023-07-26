@@ -290,7 +290,7 @@ az devops project create `
 Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
 $backendprojectId = (az devops project show ` 
     --p $backend_project `
-    --org $backend_org --q 'id' -o tsv )
+    --org $backend_org --q 'id' -o tsv)
 
 Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
