@@ -351,7 +351,7 @@ az devops service-endpoint azurerm create `
     --azure-rm-tenant-id $backend_TNTid `
     --name $backend_AZDOSrvConnName `
     --org $backend_org `
-    --p $backend_proj_Id
+    --p $backend_project
 
 Start-Sleep -Seconds 5
 
@@ -422,5 +422,5 @@ az devops service-endpoint update `
     --p $backend_proj_Id `
     --enable-for-all true `
     --debug
-    
+
 Write-Host "Done!" -ForegroundColor Green
