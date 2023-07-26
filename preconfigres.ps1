@@ -287,6 +287,11 @@ az devops project create `
     --visibility $RepoVisibility `
     --process $RepoProcess
 
+Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
+$backendprojectId = (az devops project show ` 
+    --p $backend_project `
+    --org $backend_org --q 'id' -o tsv )
+
 Write-Host "Project '$backend_project' created successfully." -ForegroundColor Green
 
     Start-Sleep -Seconds 10
@@ -411,6 +416,6 @@ az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
     --org $backend_org `
-    --project $backend_project
+    --project $backend_projectID
 
 Write-Host "Done!" -ForegroundColor Green
