@@ -290,7 +290,7 @@ az devops project create `
     Start-Sleep -Seconds 10
 
 Write-Host "Retrieve the correct project ID To Be Used By Azure DevOps Service Endpoint..." -ForegroundColor Yellow
-$backendprojectId = (az devops project show `
+$backend_proj_Id = (az devops project show `
     --p $backend_project `
     --org $backend_org --q 'id' -o tsv)
 
@@ -358,7 +358,7 @@ az devops service-endpoint azurerm create `
     --azure-rm-tenant-id $backend_TNTid `
     --name $backend_AZDOSrvConnName `
     --org $backend_org `
-    --project $backend_projectID
+    --p $backend_proj_Id
 
     Start-Sleep -Seconds 5
 
@@ -373,13 +373,13 @@ az pipelines variable-group create `
 
 $backend_VBGroupID = $(az pipelines variable-group list `
         --organization $backend_org `
-        --project $backend_project `
+        --p $backend_project `
         --query "[?name=='$backend_VBGroup'].id" -o tsv)
 
 az pipelines variable-group update `
     --id $backend_VBGroupID `
     --org $backend_org `
-    --project $backend_project `
+    --p $backend_project `
     --authorize true
 
     Start-Sleep -Seconds 5
@@ -418,6 +418,7 @@ az devops service-endpoint update `
     --detect false `
     --id $backend_EndPid `
     --org $backend_org `
-    --project $backend_projectID
+    --p $backend_proj_Id `
+    --enable-for-all false
 
 Write-Host "Done!" -ForegroundColor Green
