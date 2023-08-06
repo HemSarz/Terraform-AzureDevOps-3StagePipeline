@@ -25,7 +25,7 @@ $appUsrRoleId = "741f803b-c850-494e-b5df-cde7c675a1ca=Role" # User.ReadWrite.All
 ##################################################################
 
 $randomNumber = Get-Random -Minimum 1 -Maximum 999
-# Create the backend_kv variable with a random name
+# Create & assign Key Vault a random name
 $backend_kv = "backend-tfaz-kv$('{0:D3}' -f $randomNumber)"
 
 # Key Vault Secret Names
@@ -40,9 +40,9 @@ $backend_STGPass_Name_kv_sc = "STGPass"
 $backend_SPNPass_Name_kv_sc = "SPNPass"
 $backend_SPNappId_Name_kv_sc = "SPNappId"
 
-############################################ 
+#######################################################
 # Set the Azure DevOps organization and project details
-############################################
+#######################################################
 
 # Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
@@ -78,7 +78,8 @@ $PipeBranch = "main"
 ############################################
 
 Write-Host "Retrieving Azure Ids..." -ForegroundColor Green
-# Retrieve AZ IDs$backend_SUBid = $(az account show --query 'id' -o tsv)
+# Retrieve AZ IDs
+$backend_SUBid = $(az account show --query 'id' -o tsv)
 $backend_SUBName = $(az account show --query 'name' -o tsv)
 $backend_TNTid = $(az account show --query 'tenantId' -o tsv)
 
