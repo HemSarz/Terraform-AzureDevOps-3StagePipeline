@@ -423,4 +423,17 @@ az pipelines create `
     --repository-type $PipeRepositoryType `
     --skip-first-run $PipeSkipFirstRun
 
+
+
+    # Install extensions used by the project
+Write-Host "Install extensions..." -ForegroundColor Red
+
+az devops extension install `
+    --extension-id azure-pipelines-terraform-tasks `
+    --publisher-id charleszipp
+
+az devops extension install `
+    --extension-id gittools `
+    --publisher-id gittools
+
 Write-Host "Done!" -ForegroundColor Green
