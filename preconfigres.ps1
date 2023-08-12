@@ -138,6 +138,7 @@ $backend_SPNappId = $(az ad sp list `
         --display-name $backend_spn `
         --query '[0].appId' -o tsv)
 
+        Write-Host "Fetch Object ID..." -ForegroundColor Yellow
 $backend_SPNid = $(az ad sp show `
         --id $backend_SPNappId `
         --query id -o tsv)
