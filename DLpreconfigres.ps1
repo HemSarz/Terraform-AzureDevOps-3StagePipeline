@@ -21,7 +21,6 @@ $backend_project = "labtfaz"
 #$backend_tfdest_yml = "tfaz_destroy.yml"
 #$backend_tfaz_build_yml = "tfazbuild.yml"
 
-
 $env:AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$backend_SPNPass
 
 Write-Host "Deleting resource group..." -ForegroundColor Yellow
