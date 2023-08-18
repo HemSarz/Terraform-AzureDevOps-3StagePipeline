@@ -6,7 +6,7 @@
 
 ### Terraform Infrastructure Deployment and Azure DevOps Integration
 
-This repository contains the Terraform configuration files and scripts required for deploying the infrastructure components on Azure. The infrastructure is provisioned using Terraform, and Azure DevOps pipelines are used for automating the deployment process.
+This repository contains the Terraform configuration files and scripts required for deploying the infrastructure components on Azure. The infrastructure is created using Terraform and provisioned using Azure DevOps pipeline for automating the deployment process.
 
 ## Table of Contents
 - [Terraform Infrastructure Deployment and Azure DevOps Integration](#terraform-infrastructure-deployment-and-azure-devops-integration)
@@ -112,16 +112,16 @@ Before deploying the infrastructure, you need to set up the backend configuratio
 
 Use the `preconfigres.ps1` script to automate this process. 
 
-The script performs the following actions:
-1. Creates a `service principal` with the required permissions.
-2. Creates an `Azure Resource Group` and `Storage Account` for the Terraform backend.
-3. Creates a `Key Vault` and sets access policies for the service principal.
-4. Creates and stores the `Azure DevOps Service Connection` details and other required secrets in the Key Vault.
+The script will:
+1. Create a `service principal` with the required permissions.
+2. Create an `Azure Resource Group` and `Storage Account` for the Terraform backend.
+3. Create a `Key Vault` and sets access policies for the service principal.
+4. Create and stores the `Azure DevOps Service Connection` details and other required secrets in the Key Vault.
 5. Create an grant for the `Azure DevOps Service Connection` to access Azure using the `SPN`.
-6. Creates an `Project` to deploy the infrastructure.
-7. Creates an `Repository` which stores all the files needed to create the Azure infrastructure.
-6. Creates two `Pipelines` which will be used to create and destroy the infrastructure.
-7. Creates and updates a `Variable group` to store `Key Vault secrets` to be used by the pipeline.
+6. Create an `Project` to deploy the infrastructure.
+7. Create an `Repository` which stores all the files needed to create the Azure infrastructure.
+6. Create two `Pipelines` which will be used to create and destroy the infrastructure.
+7. Create and updates a `Variable group` to store `Key Vault secrets` to be used by the pipeline.
 
 ##### Link the `variable group` to the Azure Key Vault
    1. In the Azure DevOps project > `Pipelines` > `Library`.
@@ -139,23 +139,21 @@ The pipeline `TFAZ-Build-Pipe` includes the following main stages:
 - `Variables Definition`: Defines variables for Terraform, Azure DevOps, and working directories.
 - `Parameters Definition`: Customizes the pipeline with environment and action selections.
 - `Publish Plan Stage`: Validates and publishes the Terraform plan.
-- `Build Artifact Plan Stage`: Creates artifact for the Terraform plan.
+- `Build Artifact Plan Stage`: Create artifact for the Terraform plan.
 - `Deploy Stage`: Applies the Terraform plan to deploy infrastructure.
 
 #### Execute the pipeline:
 
-1. Navigate to the Azure DevOps project and go to `Pipelines` > `All` > `TFAZ-Build-Pipe`.
+1. Navigate to the Azure DevOps project > `Pipelines` > `All` > `TFAZ-Build-Pipe`.
 3. Click the `Run pipeline` button on the top-right.
 5. Click `Run` to start the pipeline manually.
 6. During the pipeline execution, you will be prompted to approve the deployment to `dev`.
-
-##### Note: If you choose to deploy to `dev`, an `Environment` will be created under `Azure DevOps: Environments`.
 
 ### Verify Provisioned Azure Resources
 
 After successfully running the deployment pipeline, you can verify that the Azure resources were created based on the instructions provided in the sections above.
 
-1. Navigate to the `Azure portal` > specified `Resource Group` to ensure all resources have been provisioned correctly.
+1. Navigate to the `Azure portal` > `Resource Group` to ensure all resources have been provisioned correctly.
 3. Check for the existence of the following Azure resources:
    - Azure Storage Account
    - Storage Container
@@ -165,9 +163,7 @@ After successfully running the deployment pipeline, you can verify that the Azur
    - Network Security Group
    - Network Interface
    - Public IP
-   - Virtual Machine (Windows-based)
-
-If all the resources listed above are present in the specified Resource Group, it means the deployment was successful and the infrastructure has been provisioned accordingly.
+   - Virtual Machine
 
 ##### Acknowledgement
 
@@ -177,7 +173,7 @@ The pipeline yml is based on a template created by [Arindam Mitra](https://dev.t
 
 #### Azure Resources to be Destroyed [ `tfaz_destroy.yml` ]
 
-When the destruction pipeline is manually triggered and approved, the following Azure resources will be destroyed:
+When the destroy pipeline is manually triggered and approved, the following Azure resources will be destroyed:
 
 1. `Resource Group`: The entire resource group along with all the resources contained within it will be deleted.
 2. `Azure Storage Account`: The specified storage account and all its associated data will be permanently removed.
@@ -201,28 +197,12 @@ To manually trigger the `Destroy pipeline` in Azure DevOps:
 5. Click `Run` to start the pipeline manually.
 
 ## Azure DevOps Cleanup
-To clean up the resources provisioned in Azure DevOps, you can use the provided script `DLpreconfigres.ps1`. 
+
+Clean up Azure DevOps resources using the script `DLpreconfigres.ps1`. 
 
 This script will perform the following actions:
 
 1. Delete the `Azure AD user`.
 2. Delete the `Azure Resource Group` and all resources provisioned within it.
 3. Delete the `Azure AD application` & `Service Principal`
-4. Delete `Azure DevOps resources` including: `service connection`, `variable group`, and `pipelines`.
-
-# Conclusion
-
-You have successfully completed the Terraform Infrastructure Deployment and Azure DevOps Integration lab. You learned how to provision infrastructure on Azure using Terraform and automate the deployment process with Azure DevOps pipelines.
-
-Throughout the lab, you achieved the following:
-
-- Set up the backend configuration and created the necessary Azure & Azure DevOps resources using the `preconfigres.ps1` script.
-- Configured the pipeline with variables and parameters to customize the deployment for different environments and actions.
-- Published and validated the Terraform plan before deploying the infrastructure.
-- Created artifact for the Terraform plan to be used in the deployment stage.
-- Deployed the infrastructure by applying the Terraform plan through the `Deploy` stage.
-- Cleaned up the provisioned resources using the `Destroy` pipeline.
-
-Thank you for completing this lab! If you have any questions or feedback, please don't hesitate to reach out. 
-
-Happy Terraforming!
+4. Delete Azure DevOps `Project`  including: `service connection`, `variable group`, `repo` and `pipelines`.
