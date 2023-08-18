@@ -165,10 +165,6 @@ After successfully running the deployment pipeline, you can verify that the Azur
    - Public IP
    - Virtual Machine
 
-##### Acknowledgement
-
-The pipeline yml is based on a template created by [Arindam Mitra](https://dev.to/arindam0310018). The original template can be found [here](https://dev.to/arindam0310018/terraform-plan-in-devops-gui-52fp).
-
 # Resource Cleanup
 
 #### Azure Resources to be Destroyed [ `tfaz_destroy.yml` ]
@@ -206,3 +202,7 @@ This script will perform the following actions:
 2. Delete the `Azure Resource Group` and all resources provisioned within it.
 3. Delete the `Azure AD application` & `Service Principal`
 4. Delete Azure DevOps `Project`  including: `service connection`, `variable group`, `repo` and `pipelines`.
+
+##### Acknowledgement
+
+The pipeline yml is based on a template created by [Arindam Mitra](https://dev.to/arindam0310018). The original template can be found [here](https://dev.to/arindam0310018/terraform-plan-in-devops-gui-52fp).
