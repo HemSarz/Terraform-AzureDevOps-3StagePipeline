@@ -10,38 +10,34 @@ $backend_project = "labtfaz"
 #$backend_VBGroup = "hawaVB"
 
 # Azure DevOps Connection variables
-$backend_AZDOSrvConnName = "azdo-tfaz-conn"
+#$backend_AZDOSrvConnName = "azdo-tfaz-conn"
 
 # Azure DevOps variables
 $backend_org = "https://dev.azure.com/tfazlab"
 $backend_project = "labtfaz"
-$backend_AZDOSrvConnName = "azdo-tfaz-conn"
 #$backend_VBGroup = "hawaVB"
 #$backend_PipeBuild_Name = "TFaz-Build-Pipe"
 #$backend_PipeDest_Name = "Tfaz-Destroy-Pipe"
 #$backend_tfdest_yml = "tfaz_destroy.yml"
 #$backend_tfaz_build_yml = "tfazbuild.yml"
 
-# Set the SPN password as an environment variable: used by the Azdo Service Connection
+
 $env:AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$backend_SPNPass
-#$env:AZURE_DEVOPS_EXT_PAT="ww7hj2c25xypj4m6oqc5u5qhzehabll5frjhpu43qus7rql3dfeq"
 
-
-# Delete Resource Group
 Write-Host "Deleting resource group..." -ForegroundColor Yellow
 az group delete --name $backend_rg --yes --no-wait
 Write-Host "Resource group deleted." -ForegroundColor Green
 
-# Retrieve Application ID
+
 Write-Host "Retrieving Application ID..." -ForegroundColor Yellow
 $backend_appId = $(az ad sp list --display-name $backend_spn --query '[0].appId' -o tsv)
 
-# Delete Application
+
 Write-Host "Deleting Azure AD application..." -ForegroundColor Yellow
 az ad app delete --id $backend_appId
 Write-Host "Azure AD application deleted." -ForegroundColor Green
 
-# Delete Azure DevOps resources
+
 Write-Host "Deleting Azure DevOps resources..." -ForegroundColor Yellow
 az devops configure --defaults organization=$backend_org
 az devops configure --defaults project=$backend_project

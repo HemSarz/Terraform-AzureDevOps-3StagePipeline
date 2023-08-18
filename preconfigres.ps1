@@ -25,7 +25,6 @@ $appUsrRoleId = "741f803b-c850-494e-b5df-cde7c675a1ca=Role" # User.ReadWrite.All
 ##################################################################
 
 $randomNumber = Get-Random -Minimum 1 -Maximum 999
-# Create & assign Key Vault a random name
 $backend_kv = "backend-tfaz-kv$('{0:D3}' -f $randomNumber)"
 
 # Key Vault Secret Names
@@ -46,10 +45,10 @@ $backend_SPNappId_Name_kv_sc = "SPNappId"
 
 # Azure DevOps 'Project' Variables
 $backend_org = "https://dev.azure.com/tfazlab"
-$backend_project = "labtfaz" ## Note : Project name must be unique each run
+$backend_project = "labtfaz"
 $backend_projectDesc = "Project to be used in 3StagePipeline HoL"
 
-# Set the variable group details
+# Variable Group details
 $backend_VBGroup = "hawaVB"
 $description = "backendVB"
 
@@ -326,7 +325,7 @@ az devops service-endpoint update `
 Start-Sleep -Seconds 10
 
 Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor Yellow
-# use this to create a new repo | Remove "#"
+# use this to create a new repo | Remove comment out "#"
 #az devops repo create `
 #  --name $backend_RepoName `
 # --description $backend_RepoDesc `
@@ -424,16 +423,11 @@ az pipelines create `
     --skip-first-run $PipeSkipFirstRun
 
 
-
-    # Install extensions used by the project
+    # These resources are needed for running Terraform cli commands in the azure pipelines.
 Write-Host "Install extensions..." -ForegroundColor Red
 
 az devops extension install `
     --extension-id azure-pipelines-terraform-tasks `
     --publisher-id charleszipp
-
-az devops extension install `
-    --extension-id gittools `
-    --publisher-id gittools
 
 Write-Host "Done!" -ForegroundColor Green
