@@ -322,10 +322,12 @@ az devops service-endpoint update `
     --project $backend_proj_Id `
     --enable-for-all true `
 
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 5
 
 Write-Host "(Create &) Initialize Azure DevOps 'Repository'..." -ForegroundColor Yellow
+
 # use this to create a new repo | Remove comment out "#"
+
 #az devops repo create `
 #  --name $backend_RepoName `
 # --description $backend_RepoDesc `
