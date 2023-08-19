@@ -425,11 +425,15 @@ az pipelines create `
     --skip-first-run $PipeSkipFirstRun
 
 
-    # These resources are needed for running Terraform cli commands in the azure pipelines.
+# Install extensions used by the project | I enjoy using either the Charles Zipp or MS DevLabs Terraform extensions
 Write-Host "Install extensions..." -ForegroundColor Red
 
 az devops extension install `
     --extension-id azure-pipelines-terraform-tasks `
     --publisher-id charleszipp
+
+az devops extension install `
+--extension-id custom-terraform-tasks `
+--publisher-id ms-devlabs
 
 Write-Host "Done!" -ForegroundColor Green
