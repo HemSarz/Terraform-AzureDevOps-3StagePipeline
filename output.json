@@ -1,0 +1,412 @@
+[
+  {
+    "baseUri": "https://charleszipp.gallerycdn.vsassets.io/extensions/charleszipp/azure-pipelines-tasks-terraform/0.7.8/1648735212581",
+    "constraints": null,
+    "contributionTypes": [],
+    "contributions": [
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "charleszipp.azure-pipelines-tasks-terraform"
+            },
+            "relationships": null
+          }
+        ],
+        "description": null,
+        "id": "charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli",
+        "includes": null,
+        "properties": {
+          "::Attributes": 24,
+          "::Version": "0.7.8",
+          "name": "TerraformCLI",
+          "supportsTasks": [
+            "721c3f90-d938-11e8-9d92-09d7594721b5"
+          ]
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-distributed-task.tasks"
+        ],
+        "type": "ms.vss-distributed-task.task",
+        "visibleTo": null
+      },
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "charleszipp.azure-pipelines-tasks-terraform"
+            },
+            "relationships": null
+          }
+        ],
+        "description": null,
+        "id": "charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer",
+        "includes": null,
+        "properties": {
+          "::Attributes": 24,
+          "::Version": "0.7.8",
+          "name": "TerraformInstaller",
+          "supportsTasks": [
+            "11645770-d18e-11e8-8f5b-1b8b62612b3b"
+          ]
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-distributed-task.tasks"
+        ],
+        "type": "ms.vss-distributed-task.task",
+        "visibleTo": null
+      },
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "charleszipp.azure-pipelines-tasks-terraform"
+            },
+            "relationships": null
+          }
+        ],
+        "description": "A tab to show terraform plan output",
+        "id": "charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-plan",
+        "includes": null,
+        "properties": {
+          "::Attributes": 24,
+          "::Version": "0.7.8",
+          "name": "Terraform Plan",
+          "supportsTasks": [
+            "721c3f90-d938-11e8-9d92-09d7594721b5"
+          ],
+          "uri": "views/terraform-plan/.dist/index.html"
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-build-web.build-results-view"
+        ],
+        "type": "ms.vss-build-web.build-results-tab",
+        "visibleTo": null
+      }
+    ],
+    "demands": null,
+    "eventCallbacks": null,
+    "extensionId": "azure-pipelines-tasks-terraform",
+    "extensionName": "Azure Pipelines Terraform Tasks",
+    "fallbackBaseUri": "https://charleszipp.gallery.vsassets.io/_apis/public/gallery/publisher/charleszipp/extension/azure-pipelines-tasks-terraform/0.7.8/assetbyname",
+    "files": [],
+    "flags": null,
+    "installState": {
+      "flags": "none",
+      "installationIssues": null,
+      "lastUpdated": "2023-08-19T16:21:46.853000+00:00"
+    },
+    "language": null,
+    "lastPublished": "2023-02-01T18:26:11.513000+00:00",
+    "licensing": null,
+    "manifestVersion": 1.0,
+    "publisherId": "charleszipp",
+    "publisherName": "Charles Zipp",
+    "registrationId": "4fb7af7c-1a5f-43a3-a068-05b26d40100a",
+    "restrictedTo": null,
+    "scopes": [
+      "vso.build"
+    ],
+    "serviceInstanceType": null,
+    "version": "0.7.8"
+  },
+  {
+    "baseUri": "https://ms-devlabs.gallerycdn.vsassets.io/extensions/ms-devlabs/custom-terraform-tasks/0.1.21/1678214449787",
+    "constraints": null,
+    "contributionTypes": [],
+    "contributions": [
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "ms-devlabs.custom-terraform-tasks"
+            },
+            "relationships": null
+          }
+        ],
+        "description": null,
+        "id": "ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task",
+        "includes": null,
+        "properties": {
+          "::Attributes": 16,
+          "::Version": "0.1.21",
+          "name": "Tasks/TerraformInstaller"
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-distributed-task.tasks"
+        ],
+        "type": "ms.vss-distributed-task.task",
+        "visibleTo": null
+      },
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "ms-devlabs.custom-terraform-tasks"
+            },
+            "relationships": null
+          }
+        ],
+        "description": null,
+        "id": "ms-devlabs.custom-terraform-tasks.custom-terraform-release-task",
+        "includes": null,
+        "properties": {
+          "::Attributes": 16,
+          "::Version": "0.1.21",
+          "name": "Tasks/TerraformTask"
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-distributed-task.tasks"
+        ],
+        "type": "ms.vss-distributed-task.task",
+        "visibleTo": null
+      },
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "ms-devlabs.custom-terraform-tasks"
+            },
+            "relationships": null
+          }
+        ],
+        "description": "Credentials for task invoking AWS services",
+        "id": "ms-devlabs.custom-terraform-tasks.aws-enpoint-type",
+        "includes": null,
+        "properties": {
+          "::Attributes": 16,
+          "::Version": "0.1.21",
+          "authenticationSchemes": [
+            {
+              "headers": [
+                {
+                  "name": "X-Amz-Date",
+                  "value": "{{ #getCurrentUTCDate {} }}"
+                },
+                {
+                  "name": "X-Amz-Content-Sha256",
+                  "value": "{{ #getHashedPayload {} }}"
+                },
+                {
+                  "name": "Authorization",
+                  "value": "{{ #getAuthorizationHeader { 'username' : 'endpoint.username', 'password' : 'endpoint.password', 'method' : 'get' } }}"
+                }
+              ],
+              "inputDescriptors": [
+                {
+                  "description": "The AWS access key id for signing programmatic requests",
+                  "id": "username",
+                  "inputMode": "textbox",
+                  "isConfidential": false,
+                  "name": "Access key id",
+                  "validation": {
+                    "dataType": "string",
+                    "isRequired": true
+                  }
+                },
+                {
+                  "description": "The AWS secret access key for signing programmatic requests",
+                  "id": "password",
+                  "inputMode": "passwordbox",
+                  "isConfidential": true,
+                  "name": "Secret access key",
+                  "validation": {
+                    "dataType": "string",
+                    "isRequired": true
+                  }
+                },
+                {
+                  "description": "The region of the AWS S3 bucket to use for storing the state file.<br><br>Example: us-east-1.<br><br>Note: This region value is used for signing the programmatic requests. In the task, you can use the buckets in this region for storing the state file.",
+                  "id": "region",
+                  "inputMode": "textbox",
+                  "isConfidential": false,
+                  "name": "Region",
+                  "validation": {
+                    "dataType": "string",
+                    "isRequired": true
+                  }
+                }
+              ],
+              "type": "ms.vss-endpoint.endpoint-auth-scheme-basic"
+            }
+          ],
+          "dataSources": [
+            {
+              "RequestVerb": "GET",
+              "endpointUrl": "{{endpoint.url}}",
+              "name": "AWS",
+              "resultSelector": "xpath://ListAllMyBucketsResult/Buckets/Bucket/Name"
+            }
+          ],
+          "displayName": "AWS for Terraform",
+          "name": "AWSServiceEndpoint",
+          "url": {
+            "displayName": "Server Url",
+            "helpText": "AWS homepage",
+            "isVisible": "false",
+            "value": "https://s3.amazonaws.com/"
+          }
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-endpoint.endpoint-types"
+        ],
+        "type": "ms.vss-endpoint.service-endpoint-type",
+        "visibleTo": null
+      },
+      {
+        "constraints": [
+          {
+            "group": null,
+            "id": null,
+            "inverse": null,
+            "name": "ExtensionLicensed",
+            "properties": {
+              "extensionId": "ms-devlabs.custom-terraform-tasks"
+            },
+            "relationships": null
+          }
+        ],
+        "description": "Credentials for connecting to Google Cloud Platform",
+        "id": "ms-devlabs.custom-terraform-tasks.google-cloud-service-endpoint",
+        "includes": null,
+        "properties": {
+          "::Attributes": 16,
+          "::Version": "0.1.21",
+          "authenticationSchemes": [
+            {
+              "inputDescriptors": [
+                {
+                  "description": "The client email field in the JSON key file for creating the JSON Web Token",
+                  "id": "Issuer",
+                  "inputMode": "textbox",
+                  "isConfidential": false,
+                  "name": "Client email",
+                  "validation": {
+                    "dataType": "string",
+                    "isRequired": false,
+                    "maxLength": 300
+                  }
+                },
+                {
+                  "description": "The token uri field in the JSON key file for creating the JSON Web Token",
+                  "id": "Audience",
+                  "inputMode": "textbox",
+                  "isConfidential": false,
+                  "name": "Token uri",
+                  "validation": {
+                    "dataType": "string",
+                    "isRequired": true,
+                    "maxLength": 300
+                  }
+                }
+              ],
+              "type": "ms.vss-endpoint.endpoint-auth-scheme-JWT"
+            }
+          ],
+          "dataSources": [
+            {
+              "endpointUrl": "{{endpoint.url}}storage/v1/b?project=$(endpoint.project)",
+              "name": "GCP",
+              "resultSelector": "jsonpath:$.items[*].name"
+            }
+          ],
+          "displayName": "GCP for Terraform",
+          "helpMarkDown": "[Get JSON Key File](https://console.cloud.google.com/iam-admin/serviceaccounts)",
+          "inputDescriptors": [
+            {
+              "description": "The project id of the GCP project in which your resources will be managed",
+              "id": "project",
+              "inputMode": "textbox",
+              "isConfidential": false,
+              "name": "Project id",
+              "validation": {
+                "dataType": "string",
+                "isRequired": true
+              }
+            }
+          ],
+          "name": "GoogleCloudServiceEndpoint",
+          "url": {
+            "displayName": "Server Url",
+            "helpText": "GCP homepage",
+            "isVisible": "false",
+            "value": "https://www.googleapis.com/"
+          }
+        },
+        "restrictedTo": [
+          "member"
+        ],
+        "targets": [
+          "ms.vss-endpoint.endpoint-types"
+        ],
+        "type": "ms.vss-endpoint.service-endpoint-type",
+        "visibleTo": null
+      }
+    ],
+    "demands": null,
+    "eventCallbacks": null,
+    "extensionId": "custom-terraform-tasks",
+    "extensionName": "Terraform",
+    "fallbackBaseUri": "https://ms-devlabs.gallery.vsassets.io/_apis/public/gallery/publisher/ms-devlabs/extension/custom-terraform-tasks/0.1.21/assetbyname",
+    "files": [],
+    "flags": null,
+    "installState": {
+      "flags": "none",
+      "installationIssues": null,
+      "lastUpdated": "2023-08-19T16:19:30.400000+00:00"
+    },
+    "language": null,
+    "lastPublished": "2023-03-07T18:43:20.240000+00:00",
+    "licensing": null,
+    "manifestVersion": 1.0,
+    "publisherId": "ms-devlabs",
+    "publisherName": "Microsoft DevLabs",
+    "registrationId": "a71342af-7fec-439b-b797-b5fef5ffac25",
+    "restrictedTo": null,
+    "scopes": [],
+    "serviceInstanceType": null,
+    "version": "0.1.21"
+  }
+]

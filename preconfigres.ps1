@@ -137,7 +137,7 @@ $backend_SPNappId = $(az ad sp list `
         --display-name $backend_spn `
         --query '[0].appId' -o tsv)
 
-        Write-Host "Fetch Object ID..." -ForegroundColor Yellow
+Write-Host "Fetch Object ID..." -ForegroundColor Yellow
 $backend_SPNid = $(az ad sp show `
         --id $backend_SPNappId `
         --query id -o tsv)
@@ -429,11 +429,11 @@ az pipelines create `
 Write-Host "Install extensions..." -ForegroundColor Red
 
 az devops extension install `
-    --extension-id azure-pipelines-terraform-tasks `
+    --extension-id charleszipp.azure-pipelines-tasks-terraform `
     --publisher-id charleszipp
 
 az devops extension install `
---extension-id custom-terraform-tasks `
---publisher-id ms-devlabs
+    --extension-id custom-terraform-tasks `
+    --publisher-id ms-devlabs
 
 Write-Host "Done!" -ForegroundColor Green

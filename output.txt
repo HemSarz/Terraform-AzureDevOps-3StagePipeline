@@ -1,0 +1,4 @@
+Publisher Id    Extension Id             Name                     Version     Last Updated     States
+--------------  -----------------------  -----------------------  ----------  ---------------  --------
+charleszip...   azure-pipelines-task...  Azure Pipelines Terr...  0.7.8       2023-02-01       none
+ms-devlabs      custom-terraform-tas...  Terraform                0.1.21      2023-03-07       none
