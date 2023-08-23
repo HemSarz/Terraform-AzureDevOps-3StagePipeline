@@ -194,7 +194,7 @@ stages:
             displayName: Manual Intervention Approve | Reject
             inputs:
               instructions: "Please review the request"
-              notifyUsers: "" # Add users email or leave ""
+              notifyUsers: "" # Add user email or leave ""
               onTimeout: reject
 
   # Configuration: Deploy stage to apply the Terraform plan
