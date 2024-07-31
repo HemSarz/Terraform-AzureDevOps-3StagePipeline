@@ -1,5 +1,5 @@
 ############################################ 
-# Set Azure the resource variables
+# Set Azure resource variables
 ############################################
 
 $backend_spn = "tfazinfra"
